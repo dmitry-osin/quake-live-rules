@@ -1,0 +1,55 @@
+Options -Indexes
+RewriteEngine On
+
+# Redirect from HTTP to HTTPS (uncomment if needed)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Error handling
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+
+# Protect system files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Static files caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # Set correct path for static files
+    <FilesMatch "\.(jpg|jpeg|png|gif|css|js)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+    
+    # Specific rules for different file types
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# Allow access to static files
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif)$">
+    Order Allow,Deny
+    Allow from all
+    Require all granted
+</FilesMatch>
+
+# Set correct MIME types
+AddType text/css .css
+AddType application/javascript .js
+AddType image/jpeg .jpg .jpeg
+AddType image/png .png
+AddType image/gif .gif
+
+# Enable CORS for static files
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|jpg|jpeg|png|gif)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set X-Content-Type-Options "nosniff"
+    </FilesMatch>
+</IfModule> 

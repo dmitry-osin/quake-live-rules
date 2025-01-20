@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      # Mount website files
+      - ./http_docs:/var/www/html
+      # Mount Apache configuration
+      - ./.htaccess:/var/www/html/.htaccess
+    restart: unless-stopped
