@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    image: ghcr.io/dmitry-osin/quake-live-rules:latest
     ports:
       - "80:80"
     volumes:
